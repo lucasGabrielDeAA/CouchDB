@@ -4,11 +4,7 @@ import json
 
 ##Classe Produto com seus respectivos atributos
 class Produto:
-	#Construtor default
-	def __init__(self):
-		Produto.__init__(self)
-
-	#Contrutor sobrecarregado
+	##Contrutor
 	def __init__(self, _id, nome, descricao, preco, quantidade):
 		self._id = _id
 		self.nome = nome
