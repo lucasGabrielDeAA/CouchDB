@@ -14,7 +14,7 @@ class Produto:
 		self.nome = nome
 		self.descricao = descricao
 		self.preco = preco
-		self.quantidade = quantidade++
+		self.quantidade = quantidade
 
 	def toString(self):
 		return json.dumps({'id': self._id, 'nome':self.nome, 'descricao':self.descricao, 'preco':self.preco, 'quantidade':self.quantidade})
