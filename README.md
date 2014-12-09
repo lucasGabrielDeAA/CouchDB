@@ -7,7 +7,7 @@ Para executar a aplicação é necessário que o Apache CouchDB esteja instalado
 
  # apt-get install couchdb
 
-A aplicação utiliza o módulo requests do python, que também é necessária ser instalada.
+A aplicação utiliza o módulo requests do python, que também é necessária ser instalado.
 
  # apt-get install python-requests
 
