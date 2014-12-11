@@ -25,7 +25,7 @@ Seleciona a opção desejada:\n
 '''
 
 ##Requisição realizada para verificar a existência do banco de dados.
-r = requests.head(url + '/' + db_name)
+head = requests.head(url + '/' + db_name)
 
 clean_screen = lambda: os.system('clear')
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 		clean_screen()
 
 		##Verificando a existência do banco de dados.
-		if r.status_code == 200
+		if head.status_code == 200
 			print opcoes
 			opcao = input('Opção escolhida: ')
 
@@ -55,12 +55,16 @@ if __name__ == '__main__':
 				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
 
 				##Realizando a requisição do tipo PUT para criação do objeto.
-				request = requests.put(url + put + '/' + db_name + '/_design/' + produto)
+				put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
+
+				resp_put = json.loads(put.content).get()
 
 			##Editar produto
 			elif opcao == 2:
 				clean_screen()
 				print 'Editar produto\n\n'
+
+				get_all = requests.get(url + '/' + db_name + '/_all_docs')
 
 			##Consultar produto
 			elif opcao == 3:
@@ -85,13 +89,13 @@ if __name__ == '__main__':
 
 			raw_input('\nPressione para continuar...')
 
-		elif r.status_code == 404
+		elif head.status_code == 404
 			print 'Aguarde enquanto o banco de dados é criado...\n\n'
-			request = requests.put(put + '/' + db_name)
+			put_db = requests.put(put + '/' + db_name)
 
 			for index in range(5):
 				print '%s s até a conclusão' % index
-				time.sleep(index)
+				time.sleep(1)
 
 			print 'Banco de dados %s criado' % db_name
 
@@ -108,7 +112,7 @@ if __name__ == '__main__':
 				##Criando um objeto produto que será utilizado para realizar a requisição do tipo PUT.
 				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
 
-				request = requests.put(url + put + '/' + db_name + '/_design/' + produto)
+				put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
 
 			##Editar produto
 			elif opcao == 2:
