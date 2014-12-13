@@ -36,7 +36,7 @@ if __name__ == '__main__':
 		clean_screen()
 
 		##Verificando a existência do banco de dados.
-		if head.status_code == 200
+		if head.status_code == 200:
 			print opcoes
 			opcao = input('Opção escolhida: ')
 
@@ -49,7 +49,7 @@ if __name__ == '__main__':
 				descricao = raw_input('Descrição para o produto: ')
 				preco = int(raw_input('Preço do produto: '))
 				quantidade = int(raw_input('Quantidade em estoque: '))
-				_id++
+				_id=_id+1
 
 				##Criando um objeto produto que será utilizado para realizar a requisição do tipo PUT.
 				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
 			raw_input('\nPressione para continuar...')
 
-		elif head.status_code == 404
+		elif head.status_code == 404:
 			print 'Aguarde enquanto o banco de dados é criado...\n\n'
 			put_db = requests.put(put + '/' + db_name)
 
@@ -107,7 +107,7 @@ if __name__ == '__main__':
 				descricao = raw_input('Descrição para o produto: ')
 				preco = int(raw_input('Preço do produto: '))
 				quantidade = int(raw_input('Quantidade em estoque: '))
-				_id++
+				_id=_id+1
 
 				##Criando um objeto produto que será utilizado para realizar a requisição do tipo PUT.
 				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
