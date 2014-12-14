@@ -71,10 +71,17 @@ if __name__ == '__main__':
 				id_produto = raw_input('Id do produto: ')
 
 				edita_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
-
 				dados = json.loads(edita_produto)
 
 				try:
+					print 'Dados do produto\n\n'
+					print 'Nome: ', dados['nome']
+					print 'Descrição: ', dados['descricao']
+					print 'Preço: ', dados['preco']
+					print 'Quantidade em estoque: ', dados['quantidade']
+
+					print '\n\n'
+
 					nome = raw_input('Nome do produto: ')
 					descricao = raw_input('Descrição para o produto: ')
 					preco = float(raw_input('Preço do produto: '))
@@ -160,7 +167,7 @@ if __name__ == '__main__':
 			print 'Banco de Dados não encontrado...\n'
 			print 'Aguarde enquanto o banco de dados é criado...\n\n'
 			
-			for index in range(5):
+			for index in range(5, -1, -1):
 				print '%s s até a conclusão...' % index + 1
 				time.sleep(1)
 
@@ -171,7 +178,6 @@ if __name__ == '__main__':
 			print opcoes
 			opcao = input('Opção escolhida: ')
 
-			##Adicionar produto
 			##Adicionar produto
 			if opcao == 1:
 				system('clear')
@@ -202,10 +208,17 @@ if __name__ == '__main__':
 				id_produto = raw_input('Id do produto: ')
 
 				edita_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
-
 				dados = json.loads(edita_produto)
 
 				try:
+					print 'Dados do produto\n\n'
+					print 'Nome: ', dados['nome']
+					print 'Descrição: ', dados['descricao']
+					print 'Preço: ', dados['preco']
+					print 'Quantidade em estoque: ', dados['quantidade']
+
+					print '\n\n'
+
 					nome = raw_input('Nome do produto: ')
 					descricao = raw_input('Descrição para o produto: ')
 					preco = float(raw_input('Preço do produto: '))
