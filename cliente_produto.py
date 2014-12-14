@@ -58,9 +58,9 @@ if __name__ == '__main__':
 				put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
 
 				if put.status_code == 200:
-					print 'Produto Cadastrado'
+					print '\nProduto Cadastrado\n'
 				else:
-					print 'Impossível cadastrar produto'
+					print '\nImpossível cadastrar produto\n'
 
 			##Editar produto
 			elif opcao == 2:
@@ -84,9 +84,9 @@ if __name__ == '__main__':
 					put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
 
 					if put.status_code == 200:
-						print 'Produto Alterado com sucesso'
+						print '\nProduto Alterado com sucesso\n'
 				except:
-					print 'Id inválido!'
+					print '\nId inválido!\n'
 
 			##Consultar produto
 			elif opcao == 3:
@@ -105,7 +105,7 @@ if __name__ == '__main__':
 					print 'Preço: ', dados['preco']
 					print 'Quantidade em estoque: ', dados['quantidade']
 				except:
-					print 'Id inválido!'
+					print '\nId inválido!\n'
 
 			##Exibir produtos
 			elif opcao == 4:
@@ -149,9 +149,9 @@ if __name__ == '__main__':
 					delete = requests.delete(url + '/' + db_name + '/_design/' + produto)
 
 					if delete.status_code == 200:
-						print 'Produto de id"%s" removido com sucesso' % id_produto
+						print '\nProduto de id"%s" removido com sucesso\n' % id_produto
 				except:
-					print 'Id inválido!'
+					print '\nId inválido!\n'
 
 			elif opcao == 6:
 				clean_screen()
@@ -193,9 +193,9 @@ if __name__ == '__main__':
 				put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
 
 				if put.status_code == 200:
-					print 'Produto Cadastrado'
+					print '\nProduto Cadastrado\n'
 				else:
-					print 'Impossível cadastrar produto'
+					print '\nImpossível cadastrar produto\n'
 
 			##Editar produto
 			elif opcao == 2:
@@ -219,9 +219,9 @@ if __name__ == '__main__':
 					put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
 
 					if put.status_code == 200:
-						print 'Produto Alterado com sucesso'
+						print '\nProduto Alterado com sucesso\n'
 				except:
-					print 'Id inválido!'
+					print '\nId inválido!\n'
 
 			##Consultar produto
 			elif opcao == 3:
@@ -240,7 +240,7 @@ if __name__ == '__main__':
 					print 'Preço: ', dados['preco']
 					print 'Quantidade em estoque: ', dados['quantidade']
 				except:
-					print 'Id inválido!'
+					print '\nId inválido!\n'
 
 			##Exibir produtos
 			elif opcao == 4:
@@ -286,7 +286,7 @@ if __name__ == '__main__':
 					if delete.status_code == 200:
 						print 'Produto de id"%s" removido com sucesso' % id_produto
 				except:
-					print 'Id inválido!'
+					print '\nId inválido!\n'
 
 			elif opcao == 6:
 				clean_screen()
