@@ -165,12 +165,15 @@ if __name__ == '__main__':
 			print 'Aguarde enquanto o banco de dados é criado...\n\n'
 			
 			for index in range(5):
-				print '%s s até a conclusão...' % index
+				print '%s s até a conclusão...' % index + 1
 				time.sleep(1)
 
-			put_db = requests.put(put + '/' + db_name)
+			put_db = requests.put(url + '/' + db_name)
 
 			print 'Banco de dados %s criado' % db_name
+
+			print opcoes
+			opcao = input('Opção escolhida: ')
 
 			##Adicionar produto
 			if opcao == 1:
