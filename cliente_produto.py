@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
 				nome = raw_input('Nome do produto: ')
 				descricao = raw_input('Descrição para o produto: ')
-				preco = int(raw_input('Preço do produto: '))
+				preco = float(raw_input('Preço do produto: '))
 				quantidade = int(raw_input('Quantidade em estoque: '))
 				_id = _id+1
 
@@ -76,7 +76,7 @@ if __name__ == '__main__':
 				try:
 					nome = raw_input('Nome do produto: ')
 					descricao = raw_input('Descrição para o produto: ')
-					preco = int(raw_input('Preço do produto: '))
+					preco = float(raw_input('Preço do produto: '))
 					quantidade = int(raw_input('Quantidade em estoque: '))
 
 					produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
@@ -182,7 +182,7 @@ if __name__ == '__main__':
 
 				nome = raw_input('Nome do produto: ')
 				descricao = raw_input('Descrição para o produto: ')
-				preco = int(raw_input('Preço do produto: '))
+				preco = float(raw_input('Preço do produto: '))
 				quantidade = int(raw_input('Quantidade em estoque: '))
 				_id = _id+1
 
@@ -211,7 +211,7 @@ if __name__ == '__main__':
 				try:
 					nome = raw_input('Nome do produto: ')
 					descricao = raw_input('Descrição para o produto: ')
-					preco = int(raw_input('Preço do produto: '))
+					preco = float(raw_input('Preço do produto: '))
 					quantidade = int(raw_input('Quantidade em estoque: '))
 
 					produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
