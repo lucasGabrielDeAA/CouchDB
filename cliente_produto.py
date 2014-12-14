@@ -71,6 +71,20 @@ if __name__ == '__main__':
 				clean_screen()
 				print 'Consultar produto\n\n'
 
+				id_produto = raw_input('Id do produto: ')
+
+				busca_produto = requests.get(url + '/' + db_name + '/' + id_produto)
+
+				dados = json.loads(busca_produto)
+
+				try:
+					print 'Nome: ', dados['nome']
+					print 'Descrição: ', dados['descricao']
+					print 'Preço: ', dados['preco']
+					print 'Quantidade em estoque: ', dados['quantidade']
+				except:
+					print 'Id inválido!'
+
 			##Exibir produtos
 			elif opcao == 4:
 				clean_screen()
@@ -85,11 +99,11 @@ if __name__ == '__main__':
 					arquivo.write(r.content)
 					arquivo.close()
 
-					print 'id do produto: ' + str(ids) 
-					print 'Nome: ' + str(etree.parse('arquivo.xml').getroot().find('nome').attrib['value'])
-					print 'Desrição: ' + str(etree.parse('arquivo.xml').getroot().find('descricao').attrib['value'])
-					print 'Preço: ' + str(etree.parse('arquivo.xml').getRoot().find('preco').attrib['value'])
-					print 'Quantidade em estoque: ' + str(etree.parse('arquivo.xml').getRoot().find('quantidade').attrib['value'])
+					print 'id do produto: ', str(ids) 
+					print 'Nome: ', str(etree.parse('arquivo.xml').getroot().find('nome').attrib['value'])
+					print 'Desrição: ', str(etree.parse('arquivo.xml').getroot().find('descricao').attrib['value'])
+					print 'Preço: ', str(etree.parse('arquivo.xml').getRoot().find('preco').attrib['value'])
+					print 'Quantidade em estoque: ', str(etree.parse('arquivo.xml').getRoot().find('quantidade').attrib['value'])
 
 					os.remove('arquivo.xml')
 
