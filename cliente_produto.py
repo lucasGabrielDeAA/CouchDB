@@ -49,7 +49,7 @@ if __name__ == '__main__':
 				descricao = raw_input('Descrição para o produto: ')
 				preco = int(raw_input('Preço do produto: '))
 				quantidade = int(raw_input('Quantidade em estoque: '))
-				_id=_id+1
+				_id = _id+1
 
 				##Criando um objeto produto que será utilizado para realizar a requisição do tipo PUT.
 				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
@@ -76,10 +76,33 @@ if __name__ == '__main__':
 				clean_screen()
 				print 'Listagem de Produtos\n\n'
 
+				r = requests.get(url + '/' + db_name + '_all_docs')
+
+				for ids in json.loads(r.content).get('_id'):
+					r = requests.get(url + '/' + db_name + '/' + str(ids))
+
+					arquivo = open('arquivo.xml', 'w+')
+					arquivo.write(r.content)
+					arquivo.close()
+
+					print 'id do produto: ' + str(ids) 
+					print 'Nome: ' + str(etree.parse('arquivo.xml').getroot().find('nome').attrib['value'])
+					print 'Desrição: ' + str(etree.parse('arquivo.xml').getroot().find('descricao').attrib['value'])
+					print 'Preço: ' + str(etree.parse('arquivo.xml').getRoot().find('preco').attrib['value'])
+					print 'Quantidade em estoque: ' + str(etree.parse('arquivo.xml').getRoot().find('quantidade').attrib['value'])
+
+					os.remove('arquivo.xml')
+
 			##Remover produto
 			elif opcao == 5:
 				clean_screen()
 				print 'Remover produto\n\n'
+
+				id_produto = raw_input('Id do produto: ')
+
+				resp_get_all = requests.get(url + '/' + db_name + '/_all_docs')
+
+				p = json.loads(resp_get_all.content).get('_id')
 
 
 			elif opcao == 6:
@@ -107,7 +130,7 @@ if __name__ == '__main__':
 				descricao = raw_input('Descrição para o produto: ')
 				preco = int(raw_input('Preço do produto: '))
 				quantidade = int(raw_input('Quantidade em estoque: '))
-				_id=_id+1
+				_id = _id+1
 
 				##Criando um objeto produto que será utilizado para realizar a requisição do tipo PUT.
 				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
