@@ -7,7 +7,8 @@ from os import system
 import time
 
 #Caminho do banco de dados CouchDB
-url = 'http://127.0.0.1:5984'
+url = 'http://127.0.0.1'
+porta = '5984'
 db_name = 'produto'
 delete = '/delete'
 put = '/put'
@@ -55,7 +56,7 @@ if __name__ == '__main__':
 				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
 
 				##Realizando a requisição do tipo PUT para criação do objeto.
-				put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
+				put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
 
 				if put.status_code == 200:
 					print '\nProduto Cadastrado\n'
@@ -69,7 +70,7 @@ if __name__ == '__main__':
 
 				id_produto = raw_input('Id do produto: ')
 
-				edita_produto = requests.get(url + '/' + db_name + '/' + id_produto)
+				edita_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
 
 				dados = json.loads(edita_produto)
 
@@ -81,7 +82,7 @@ if __name__ == '__main__':
 
 					produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
 
-					put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
+					put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
 
 					if put.status_code == 200:
 						print '\nProduto Alterado com sucesso\n'
@@ -95,7 +96,7 @@ if __name__ == '__main__':
 
 				id_produto = raw_input('Id do produto: ')
 
-				busca_produto = requests.get(url + '/' + db_name + '/' + id_produto)
+				busca_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
 
 				dados = json.loads(busca_produto)
 
@@ -112,22 +113,17 @@ if __name__ == '__main__':
 				clean_screen()
 				print 'Listagem de Produtos\n\n'
 
-				r = requests.get(url + '/' + db_name + '_all_docs')
+				try:
+					req_get = requests.get(url + ':' + porta + '/' + db_name + '_all_docs')
 
-				for ids in json.loads(r.content).get('_id'):
-					r = requests.get(url + '/' + db_name + '/' + str(ids))
-
-					arquivo = open('arquivo.xml', 'w+')
-					arquivo.write(r.content)
-					arquivo.close()
-
-					print 'id do produto: ', str(ids) 
-					print 'Nome: ', str(etree.parse('arquivo.xml').getroot().find('nome').attrib['value'])
-					print 'Desrição: ', str(etree.parse('arquivo.xml').getroot().find('descricao').attrib['value'])
-					print 'Preço: ', str(etree.parse('arquivo.xml').getRoot().find('preco').attrib['value'])
-					print 'Quantidade em estoque: ', str(etree.parse('arquivo.xml').getRoot().find('quantidade').attrib['value'])
-
-					os.remove('arquivo.xml')
+					for r in json.loads(req_get.content):
+						print 'id do produto: ', r['id'] 
+						print 'Nome: ', r['nome']
+						print 'Desrição: ', r['descricao']
+						print 'Preço: ', r['preco']
+						print 'Quantidade em estoque: ', r['quantidade']
+				except:
+					print '\nO Banco de dados está vazio!\n'
 
 			##Remover produto
 			elif opcao == 5:
@@ -137,7 +133,7 @@ if __name__ == '__main__':
 				id_produto = raw_input('Id do produto: ')
 
 				try:
-					busca_produto = requests.get(url + '/' + db_name + '/' + id_produto)
+					busca_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
 					produto = json.loads(busca_produto)
 
 					print 'O arquivo abaixo será deletado\n\n'
@@ -146,7 +142,7 @@ if __name__ == '__main__':
 					print 'Preço: ', produto['preco']
 					print 'Quantidade em estoque: ', produto['quantidade']
 
-					delete = requests.delete(url + '/' + db_name + '/_design/' + produto)
+					delete = requests.delete(url + ':' + porta + '/' + db_name + '/_design/' + produto)
 
 					if delete.status_code == 200:
 						print '\nProduto de id"%s" removido com sucesso\n' % id_produto
@@ -176,6 +172,7 @@ if __name__ == '__main__':
 			opcao = input('Opção escolhida: ')
 
 			##Adicionar produto
+			##Adicionar produto
 			if opcao == 1:
 				system('clear')
 				print 'Adicionar Produto\n\n'
@@ -190,7 +187,7 @@ if __name__ == '__main__':
 				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
 
 				##Realizando a requisição do tipo PUT para criação do objeto.
-				put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
+				put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
 
 				if put.status_code == 200:
 					print '\nProduto Cadastrado\n'
@@ -204,7 +201,7 @@ if __name__ == '__main__':
 
 				id_produto = raw_input('Id do produto: ')
 
-				edita_produto = requests.get(url + '/' + db_name + '/' + id_produto)
+				edita_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
 
 				dados = json.loads(edita_produto)
 
@@ -216,7 +213,7 @@ if __name__ == '__main__':
 
 					produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
 
-					put = requests.put(url + put + '/' + db_name + '/_design/' + produto)
+					put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
 
 					if put.status_code == 200:
 						print '\nProduto Alterado com sucesso\n'
@@ -230,7 +227,7 @@ if __name__ == '__main__':
 
 				id_produto = raw_input('Id do produto: ')
 
-				busca_produto = requests.get(url + '/' + db_name + '/' + id_produto)
+				busca_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
 
 				dados = json.loads(busca_produto)
 
@@ -247,22 +244,17 @@ if __name__ == '__main__':
 				clean_screen()
 				print 'Listagem de Produtos\n\n'
 
-				r = requests.get(url + '/' + db_name + '_all_docs')
+				try:
+					req_get = requests.get(url + ':' + porta + '/' + db_name + '_all_docs')
 
-				for ids in json.loads(r.content).get('_id'):
-					r = requests.get(url + '/' + db_name + '/' + str(ids))
-
-					arquivo = open('arquivo.xml', 'w+')
-					arquivo.write(r.content)
-					arquivo.close()
-
-					print 'id do produto: ', str(ids) 
-					print 'Nome: ', str(etree.parse('arquivo.xml').getroot().find('nome').attrib['value'])
-					print 'Desrição: ', str(etree.parse('arquivo.xml').getroot().find('descricao').attrib['value'])
-					print 'Preço: ', str(etree.parse('arquivo.xml').getRoot().find('preco').attrib['value'])
-					print 'Quantidade em estoque: ', str(etree.parse('arquivo.xml').getRoot().find('quantidade').attrib['value'])
-
-					os.remove('arquivo.xml')
+					for r in json.loads(req_get.content):
+						print 'id do produto: ', r['id'] 
+						print 'Nome: ', r['nome']
+						print 'Desrição: ', r['descricao']
+						print 'Preço: ', r['preco']
+						print 'Quantidade em estoque: ', r['quantidade']
+				except:
+					print '\nO Banco de dados está vazio!\n'
 
 			##Remover produto
 			elif opcao == 5:
@@ -272,7 +264,7 @@ if __name__ == '__main__':
 				id_produto = raw_input('Id do produto: ')
 
 				try:
-					busca_produto = requests.get(url + '/' + db_name + '/' + id_produto)
+					busca_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
 					produto = json.loads(busca_produto)
 
 					print 'O arquivo abaixo será deletado\n\n'
@@ -281,10 +273,10 @@ if __name__ == '__main__':
 					print 'Preço: ', produto['preco']
 					print 'Quantidade em estoque: ', produto['quantidade']
 
-					delete = requests.delete(url + '/' + db_name + '/_design/' + produto)
+					delete = requests.delete(url + ':' + porta + '/' + db_name + '/_design/' + produto)
 
 					if delete.status_code == 200:
-						print 'Produto de id"%s" removido com sucesso' % id_produto
+						print '\nProduto de id"%s" removido com sucesso\n' % id_produto
 				except:
 					print '\nId inválido!\n'
 
