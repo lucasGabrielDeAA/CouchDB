@@ -3,7 +3,6 @@
 import json
 import requests
 from os import system
-from produto import Produto
 import time
 
 #Caminho do banco de dados CouchDB
