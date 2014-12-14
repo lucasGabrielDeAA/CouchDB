@@ -129,6 +129,7 @@ if __name__ == '__main__':
 						print 'Desrição: ', r['descricao']
 						print 'Preço: ', r['preco']
 						print 'Quantidade em estoque: ', r['quantidade']
+						print '-' * 60
 				except:
 					print '\nO Banco de dados está vazio!\n'
 
@@ -266,6 +267,7 @@ if __name__ == '__main__':
 						print 'Desrição: ', r['descricao']
 						print 'Preço: ', r['preco']
 						print 'Quantidade em estoque: ', r['quantidade']
+						print '-' * 60
 				except:
 					print '\nO Banco de dados está vazio!\n'
 
