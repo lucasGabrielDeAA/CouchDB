@@ -28,276 +28,189 @@ Seleciona a opção desejada:\n
 ##Requisição realizada para verificar a existência do banco de dados.
 head = requests.head(url + '/' + db_name)
 
-clean_screen = lambda: os.system('clear')
+def add_produto():
+	##Verificando a existência do banco de dados.
+	verifica_banco()
 
-if __name__ == '__main__':
-	print 'Bem vindo'
+	mensagem = []
 
-	while True:
-		clean_screen()
+	nome = raw_input('Nome do produto: ')
+	descricao = raw_input('Descrição para o produto: ')
+	preco = float(raw_input('Preço do produto: '))
+	quantidade = int(raw_input('Quantidade em estoque: '))
+	_id = _id+1
 
-		##Verificando a existência do banco de dados.
-		if head.status_code == 200:
-			print opcoes
-			opcao = input('Opção escolhida: ')
+	##Criando um objeto produto que será utilizado para realizar a requisição do tipo PUT.
+	produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
 
-			##Adicionar produto
-			if opcao == 1:
-				system('clear')
-				print 'Adicionar Produto\n\n'
+	##Realizando a requisição do tipo PUT para criação do objeto.
+	put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
 
-				nome = raw_input('Nome do produto: ')
-				descricao = raw_input('Descrição para o produto: ')
-				preco = float(raw_input('Preço do produto: '))
-				quantidade = int(raw_input('Quantidade em estoque: '))
-				_id = _id+1
+	if put.status_code == 200:
+		mensagem.append('Produto Cadastrado')
+	else:
+		mensagem.append('Impossível cadastrar produto')
 
-				##Criando um objeto produto que será utilizado para realizar a requisição do tipo PUT.
-				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
+	return mensagem
 
-				##Realizando a requisição do tipo PUT para criação do objeto.
-				put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
+def edita_produto():
+	##Verificando a existência do banco de dados.
+	verifica_banco()
 
-				if put.status_code == 200:
-					print '\nProduto Cadastrado\n'
-				else:
-					print '\nImpossível cadastrar produto\n'
+	mensagem = []
 
-			##Editar produto
-			elif opcao == 2:
-				clean_screen()
-				print 'Editar produto\n\n'
+	id_produto = raw_input('Id do produto: ')
 
-				id_produto = raw_input('Id do produto: ')
+	edita_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
+	dados = json.loads(edita_produto)
 
-				edita_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
-				dados = json.loads(edita_produto)
+	if edita_produto.status_code == 200:
+		mensagem.append('Dados do produto\n\n')
+		mensagem.append('Nome: ' + dados['nome'])
+		mensagem.append('Descrição: ' + dados['descricao'])
+		mensagem.append('Preço: ' + dados['preco'])
+		mensagem.append('Quantidade em estoque: ' + dados['quantidade'])
 
-				try:
-					print 'Dados do produto\n\n'
-					print 'Nome: ', dados['nome']
-					print 'Descrição: ', dados['descricao']
-					print 'Preço: ', dados['preco']
-					print 'Quantidade em estoque: ', dados['quantidade']
+		nome = raw_input('Nome do produto: ')
+		descricao = raw_input('Descrição para o produto: ')
+		preco = float(raw_input('Preço do produto: '))
+		quantidade = int(raw_input('Quantidade em estoque: '))
 
-					print '\n\n'
+		produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
 
-					nome = raw_input('Nome do produto: ')
-					descricao = raw_input('Descrição para o produto: ')
-					preco = float(raw_input('Preço do produto: '))
-					quantidade = int(raw_input('Quantidade em estoque: '))
+		put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
 
-					produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
+		if put.status_code == 200:
+			mensagem.append('Produto alterado com sucesso')
+		else:
+			mensagem.append('Produto não alterado')
+	else:
+		mensagem.append('Id inválido!')
 
-					put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
+	return mensagem
 
-					if put.status_code == 200:
-						print '\nProduto Alterado com sucesso\n'
-				except:
-					print '\nId inválido!\n'
+def busca_produto():
+	##Verificando a existência do banco de dados.
+	verifica_banco()
 
-			##Consultar produto
-			elif opcao == 3:
-				clean_screen()
-				print 'Consultar produto\n\n'
+	mensagem = []
 
-				id_produto = raw_input('Id do produto: ')
+	id_produto = raw_input('Id do produto: ')
 
-				busca_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
+	busca_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
 
-				dados = json.loads(busca_produto)
+	dados = json.loads(busca_produto)
 
-				try:
-					print 'Nome: ', dados['nome']
-					print 'Descrição: ', dados['descricao']
-					print 'Preço: ', dados['preco']
-					print 'Quantidade em estoque: ', dados['quantidade']
-				except:
-					print '\nId inválido!\n'
+	if busca_produto.status_code == 200:
+		mensagem.append('Nome: ' + dados['nome'])
+		mensagem.append('Descrição: ' + dados['descricao'])
+		mensagem.append('Preço: ' + dados['preco'])
+		mensagem.append('Quantidade em estoque: ' + dados['quantidade'])
+	else:
+		mensagem.append('Id inválido!')
 
-			##Exibir produtos
-			elif opcao == 4:
-				clean_screen()
-				print 'Listagem de Produtos\n\n'
+	return mensagem
 
-				try:
-					req_get = requests.get(url + ':' + porta + '/' + db_name + '_all_docs')
+def exibe_produtos():
+	##Verificando a existência do banco de dados.
+	verifica_banco()
 
-					for r in json.loads(req_get.content):
-						print 'id do produto: ', r['id'] 
-						print 'Nome: ', r['nome']
-						print 'Desrição: ', r['descricao']
-						print 'Preço: ', r['preco']
-						print 'Quantidade em estoque: ', r['quantidade']
-						print '-' * 60
-				except:
-					print '\nO Banco de dados está vazio!\n'
+	mensagem = []
 
-			##Remover produto
-			elif opcao == 5:
-				clean_screen()
-				print 'Remover produto\n\n'
+	req_get = requests.get(url + ':' + porta + '/' + db_name + '_all_docs')
 
-				id_produto = raw_input('Id do produto: ')
+	if req_get.status_code == 200:
+		for r in json.loads(req_get.content):
+			mensagem.append('id do produto: ' + r['id'])
+			mensagem.append('Nome: ' + r['nome'])
+			mensagem.append('Desrição: ' + r['descricao'])
+			mensagem.append('Preço: ' + r['preco'])
+			mensagem.append('Quantidade em estoque: ' + r['quantidade'])
+			mensagem.append('\n\n')
+	else:
+		mensagem.append('O Banco de dados está vazio!')
 
-				try:
-					busca_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
-					produto = json.loads(busca_produto)
+	return mensagem
 
-					print 'O arquivo abaixo será deletado\n\n'
-					print 'Nome: ', produto['nome']
-					print 'Descrição: ', produto['descricao']
-					print 'Preço: ', produto['preco']
-					print 'Quantidade em estoque: ', produto['quantidade']
+def deleta_produto():
+	##Verificando a existência do banco de dados.
+	verifica_banco()
+	
+	mensagem = []
 
-					delete = requests.delete(url + ':' + porta + '/' + db_name + '/_design/' + produto)
+	id_produto = raw_input('Id do produto: ')
 
-					if delete.status_code == 200:
-						print '\nProduto de id"%s" removido com sucesso\n' % id_produto
-				except:
-					print '\nId inválido!\n'
+	busca_produtos = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
+	
+	produto = json.loads(busca_produtos)
 
-			elif opcao == 6:
-				clean_screen()
-				print 'Volte Sempre'
-				break
+	if busca_produtos.status_code == 200:
+		mensagem.append('O arquivo abaixo será deletado\n\n')
+		mensagem.append('Nome: ' + produto['nome'])
+		mensagem.append('Descrição: ' + produto['descricao'])
+		mensagem.append('Preço: ' + produto['preco'])
+		mensagem.append('Quantidade em estoque: ' + produto['quantidade'])
 
-			raw_input('\nPressione para continuar...')
+		delete = requests.delete(url + ':' + porta + '/' + db_name + '/_design/' + produto)
 
-		elif head.status_code == 404:
-			print 'Banco de Dados não encontrado...\n'
-			print 'Aguarde enquanto o banco de dados é criado...\n\n'
-			
-			for index in range(5, -1, -1):
-				print '%s s até a conclusão...' % index + 1
+		if delete.status_code == 200:
+			mensagem.append('\nProduto de id"%s" removido com sucesso\n' % id_produto)
+		else:
+			mensagem.append('\nProduto de id"%s" não removido\n' % id_produto)
+	else:
+		mensagem.append('\nId inválido!\n')
+
+	return mensagem
+
+def verifica_banco():
+	mensagem = []
+
+	if head.status_code == 404:
+		mensagem.append('Banco de dados não encontrado...\n')
+		mensagem.append('Aguarde esquanto o banco é criado...\n\n')
+
+		for index in range(5, 0, -1):
+				mensagem.append('%s s até a conclusão...' % index + 1)
 				time.sleep(1)
 
-			put_db = requests.put(url + '/' + db_name)
+		mensagem.append('\n\n\n')
 
-			print 'Banco de dados %s criado' % db_name
+		put_db = requests.put(url + ':' + porta + '/' + db_name)
 
-			print opcoes
-			opcao = input('Opção escolhida: ')
+		mensagem.append('Banco de dados %s criado' % db_name)
 
-			##Adicionar produto
-			if opcao == 1:
-				system('clear')
-				print 'Adicionar Produto\n\n'
+	return mensagem
 
-				nome = raw_input('Nome do produto: ')
-				descricao = raw_input('Descrição para o produto: ')
-				preco = float(raw_input('Preço do produto: '))
-				quantidade = int(raw_input('Quantidade em estoque: '))
-				_id = _id+1
+##if __name__ == '__main__':
 
-				##Criando um objeto produto que será utilizado para realizar a requisição do tipo PUT.
-				produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
+	while True:
+		
 
-				##Realizando a requisição do tipo PUT para criação do objeto.
-				put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
+		print opcoes
+		opcao = input('Opção escolhida: ')
 
-				if put.status_code == 200:
-					print '\nProduto Cadastrado\n'
-				else:
-					print '\nImpossível cadastrar produto\n'
+		##Adicionar produto
+		if opcao == 1:
+			add_produto()
 
-			##Editar produto
-			elif opcao == 2:
-				clean_screen()
-				print 'Editar produto\n\n'
+		##Editar produto
+		elif opcao == 2:
+			edita_produto()
 
-				id_produto = raw_input('Id do produto: ')
+		##Consultar produto
+		elif opcao == 3:
+			busca_produto()
 
-				edita_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
-				dados = json.loads(edita_produto)
+		##Exibir produtos
+		elif opcao == 4:
+			exibe_produtos()
 
-				try:
-					print 'Dados do produto\n\n'
-					print 'Nome: ', dados['nome']
-					print 'Descrição: ', dados['descricao']
-					print 'Preço: ', dados['preco']
-					print 'Quantidade em estoque: ', dados['quantidade']
+		##Remover produto
+		elif opcao == 5:
+			deleta_produto()
 
-					print '\n\n'
+		elif opcao == 6:
+			clean_screen()
+			break
 
-					nome = raw_input('Nome do produto: ')
-					descricao = raw_input('Descrição para o produto: ')
-					preco = float(raw_input('Preço do produto: '))
-					quantidade = int(raw_input('Quantidade em estoque: '))
-
-					produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
-
-					put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
-
-					if put.status_code == 200:
-						print '\nProduto Alterado com sucesso\n'
-				except:
-					print '\nId inválido!\n'
-
-			##Consultar produto
-			elif opcao == 3:
-				clean_screen()
-				print 'Consultar produto\n\n'
-
-				id_produto = raw_input('Id do produto: ')
-
-				busca_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
-
-				dados = json.loads(busca_produto)
-
-				try:
-					print 'Nome: ', dados['nome']
-					print 'Descrição: ', dados['descricao']
-					print 'Preço: ', dados['preco']
-					print 'Quantidade em estoque: ', dados['quantidade']
-				except:
-					print '\nId inválido!\n'
-
-			##Exibir produtos
-			elif opcao == 4:
-				clean_screen()
-				print 'Listagem de Produtos\n\n'
-
-				try:
-					req_get = requests.get(url + ':' + porta + '/' + db_name + '_all_docs')
-
-					for r in json.loads(req_get.content):
-						print 'id do produto: ', r['id'] 
-						print 'Nome: ', r['nome']
-						print 'Desrição: ', r['descricao']
-						print 'Preço: ', r['preco']
-						print 'Quantidade em estoque: ', r['quantidade']
-						print '-' * 60
-				except:
-					print '\nO Banco de dados está vazio!\n'
-
-			##Remover produto
-			elif opcao == 5:
-				clean_screen()
-				print 'Remover produto\n\n'
-
-				id_produto = raw_input('Id do produto: ')
-
-				try:
-					busca_produto = requests.get(url + ':' + porta + '/' + db_name + '/' + id_produto)
-					produto = json.loads(busca_produto)
-
-					print 'O arquivo abaixo será deletado\n\n'
-					print 'Nome: ', produto['nome']
-					print 'Descrição: ', produto['descricao']
-					print 'Preço: ', produto['preco']
-					print 'Quantidade em estoque: ', produto['quantidade']
-
-					delete = requests.delete(url + ':' + porta + '/' + db_name + '/_design/' + produto)
-
-					if delete.status_code == 200:
-						print '\nProduto de id"%s" removido com sucesso\n' % id_produto
-				except:
-					print '\nId inválido!\n'
-
-			elif opcao == 6:
-				clean_screen()
-				print 'Volte Sempre'
-				break
-
-			raw_input('\nPressione para continuar...')
+		raw_input('\nPressione para continuar...')
