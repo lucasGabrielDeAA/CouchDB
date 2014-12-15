@@ -13,7 +13,6 @@ db_name = 'produto'
 delete = '/delete'
 put = '/put'
 post = '/post'
-_id = 0
 
 opcoes = '''Cliente CouchDB\n\n\n
 Seleciona a opção desejada:\n
@@ -25,8 +24,12 @@ Seleciona a opção desejada:\n
 6 - Sair
 '''
 
-##Requisição realizada para verificar a existência do banco de dados.
-head = requests.head(url + '/' + db_name)
+def gera_id():
+	gera = requests.get(url + ':' + porta + '/_uuids')
+	resp = json.loads(gera.content)
+
+	return resp['uuids']
+
 
 def add_produto():
 	##Verificando a existência do banco de dados.
@@ -38,13 +41,13 @@ def add_produto():
 	descricao = raw_input('Descrição para o produto: ')
 	preco = float(raw_input('Preço do produto: '))
 	quantidade = int(raw_input('Quantidade em estoque: '))
-	_id = _id+1
+	_id = gera_id()
 
 	##Criando um objeto produto que será utilizado para realizar a requisição do tipo PUT.
 	produto = json.dumps({'id':_id, 'nome':nome, 'descricao': descricao, 'preco': preco, 'quantidade':quantidade})
 
 	##Realizando a requisição do tipo PUT para criação do objeto.
-	put = requests.put(url + ':' + porta + put + '/' + db_name + '/_design/' + produto)
+	put = requests.put(url + ':' + porta + put + '/' + db_name + '/' + _id + '/' + produto)
 
 	if put.status_code == 200:
 		mensagem.append('Produto Cadastrado')
@@ -144,7 +147,7 @@ def deleta_produto():
 	
 	produto = json.loads(busca_produtos)
 
-	if busca_produtos.status_code == 200:
+	if busca_produtos.status_code == 201:
 		mensagem.append('O arquivo abaixo será deletado\n\n')
 		mensagem.append('Nome: ' + produto['nome'])
 		mensagem.append('Descrição: ' + produto['descricao'])
@@ -165,12 +168,15 @@ def deleta_produto():
 def verifica_banco():
 	mensagem = []
 
+	##Requisição realizada para verificar a existência do banco de dados.
+	head = requests.head(url + '/' + db_name)
+
 	if head.status_code == 404:
 		mensagem.append('Banco de dados não encontrado...\n')
 		mensagem.append('Aguarde esquanto o banco é criado...\n\n')
 
 		for index in range(5, 0, -1):
-				mensagem.append('%s s até a conclusão...' % index + 1)
+				mensagem.append('%s s até a conclusão...' % index)
 				time.sleep(1)
 
 		mensagem.append('\n\n\n')
