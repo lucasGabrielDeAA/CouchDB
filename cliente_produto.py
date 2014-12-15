@@ -210,7 +210,6 @@ def verifica_banco():
 			deleta_produto()
 
 		elif opcao == 6:
-			clean_screen()
 			break
 
 		raw_input('\nPressione para continuar...')
