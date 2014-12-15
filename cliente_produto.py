@@ -184,30 +184,33 @@ def verifica_banco():
 ##if __name__ == '__main__':
 
 	while True:
-		
-
 		print opcoes
 		opcao = input('Opção escolhida: ')
 
 		##Adicionar produto
 		if opcao == 1:
-			add_produto()
+			for i in add_produto():
+				print i
 
 		##Editar produto
 		elif opcao == 2:
-			edita_produto()
+			for i in edita_produto():
+				print i
 
 		##Consultar produto
 		elif opcao == 3:
-			busca_produto()
+			for i in busca_produto():
+				print i
 
 		##Exibir produtos
 		elif opcao == 4:
-			exibe_produtos()
+			for i in exibe_produtos():
+				print i
 
 		##Remover produto
 		elif opcao == 5:
-			deleta_produto()
+			for i in deleta_produto():
+				print i
 
 		elif opcao == 6:
 			break
